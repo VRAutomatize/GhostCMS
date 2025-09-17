@@ -48,14 +48,17 @@ yarn docker:stop
 
 ### 🔧 Dockerfiles Disponíveis
 
-O projeto inclui 4 versões do Dockerfile para diferentes cenários:
+O projeto inclui 6 versões do Dockerfile para diferentes cenários:
 
 - **`Dockerfile`** - Versão completa com yarn (padrão)
 - **`Dockerfile.simple`** - Versão simplificada com npm
 - **`Dockerfile.robust`** - Versão robusta com otimizações
-- **`Dockerfile.fixed`** - Versão com correção de conflitos de dependências (recomendada)
+- **`Dockerfile.fixed`** - Versão com correção de conflitos de dependências
+- **`Dockerfile.minimal`** - Versão minimalista (recomendada para Easypanel)
+- **`Dockerfile.yarn`** - Versão com Yarn (mais compatível com Ghost)
+- **`Dockerfile.official`** - Baseado na imagem oficial do Ghost
 
-**Para Easypanel**, use o `Dockerfile.fixed` que resolve conflitos de dependências.
+**Para Easypanel**, use o `Dockerfile.minimal` que ignora dependências problemáticas.
 
 ### 4. Execute o seed (opcional)
 
@@ -215,19 +218,21 @@ docker-compose down -v
 
 ## 🚨 Troubleshooting
 
-### Problema: Erro de build no Docker (conflito de dependências)
+### Problema: Erro de build no Docker (dependências não encontradas)
 
-**Solução**: Use o Dockerfile.fixed que resolve conflitos de dependências:
+**Solução**: Use o Dockerfile.minimal que ignora dependências problemáticas:
 
 ```bash
 # No easypanel.json, altere para:
-"dockerfile": "Dockerfile.fixed"
+"dockerfile": "Dockerfile.minimal"
 
 # Ou teste localmente:
-docker build -f Dockerfile.fixed -t ghost-cms-fork .
+docker build -f Dockerfile.minimal -t ghost-cms-fork .
 ```
 
-**Erro específico**: `ERESOLVE unable to resolve dependency tree` entre knex e bookshelf
+**Erros específicos**: 
+- `@tryghost/i18n@0.0.0 is not in this registry`
+- `ERESOLVE unable to resolve dependency tree`
 
 ### Problema: Ghost não conecta ao MySQL
 
