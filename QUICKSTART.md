@@ -90,6 +90,15 @@ Edite em 3 lugares:
 
 ## 🔧 Troubleshooting
 
+### Erro de build no Docker
+```bash
+# Use o Dockerfile.simple (mais estável)
+docker build -f Dockerfile.simple -t ghost-cms-fork .
+
+# No Easypanel, altere easypanel.json:
+"dockerfile": "Dockerfile.simple"
+```
+
 ### Ghost não conecta ao MySQL
 ```bash
 docker-compose logs mysql

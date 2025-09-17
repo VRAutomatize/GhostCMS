@@ -46,6 +46,16 @@ yarn docker:logs
 yarn docker:stop
 ```
 
+### 🔧 Dockerfiles Disponíveis
+
+O projeto inclui 3 versões do Dockerfile para diferentes cenários:
+
+- **`Dockerfile`** - Versão completa com yarn (padrão)
+- **`Dockerfile.simple`** - Versão simplificada com npm
+- **`Dockerfile.robust`** - Versão robusta com otimizações
+
+**Para Easypanel**, use o `Dockerfile.simple` que é mais estável.
+
 ### 4. Execute o seed (opcional)
 
 ```bash
@@ -204,6 +214,18 @@ docker-compose down -v
 
 ## 🚨 Troubleshooting
 
+### Problema: Erro de build no Docker
+
+**Solução**: Use o Dockerfile.simple que é mais estável:
+
+```bash
+# No easypanel.json, altere para:
+"dockerfile": "Dockerfile.simple"
+
+# Ou teste localmente:
+docker build -f Dockerfile.simple -t ghost-cms-fork .
+```
+
 ### Problema: Ghost não conecta ao MySQL
 
 **Solução**: Verifique se o MySQL está rodando e acessível:
@@ -237,6 +259,15 @@ docker-compose logs ghost-fork
 # Aguarde o Ghost inicializar completamente
 sleep 30
 yarn seed
+```
+
+### Problema: Dependências não instalam
+
+**Solução**: Use npm ao invés de yarn:
+
+```bash
+# No Dockerfile, altere:
+RUN npm install --production --no-optional --no-audit --no-fund
 ```
 
 ## 📝 Logs e Monitoramento

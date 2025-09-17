@@ -1,40 +1,44 @@
-# Ghost CMS Fork - Dockerfile customizado
+# Ghost CMS Fork - Dockerfile robusto
 FROM node:18-alpine
 
-# Instalar dependências do sistema necessárias
+# Instalar dependências do sistema
 RUN apk add --no-cache \
     dumb-init \
-    su-exec \
     bash \
     curl \
     python3 \
     make \
     g++
 
-# Criar usuário não-root para segurança
+# Criar usuário não-root
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S ghost -u 1001
 
 # Definir diretório de trabalho
 WORKDIR /var/lib/ghost
 
-# Copiar package.json do Ghost core primeiro
+# Copiar apenas package.json primeiro
 COPY ghost/core/package.json ./
 
-# Instalar dependências de produção com npm (mais estável)
-RUN npm install --production --no-optional && \
+# Instalar dependências com configurações otimizadas
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm install --production --no-optional --no-audit --no-fund --silent && \
     npm cache clean --force
 
 # Copiar código fonte do Ghost
 COPY ghost/core/ ./
 
-# Criar diretório de conteúdo e definir permissões
+# Criar diretório de conteúdo com permissões corretas
 RUN mkdir -p /var/lib/ghost/content && \
     chown -R ghost:nodejs /var/lib/ghost && \
     chmod -R 755 /var/lib/ghost
 
 # Construir assets de produção
 RUN npm run build:assets
+
+# Limpar cache e arquivos desnecessários
+RUN npm cache clean --force && \
+    rm -rf /tmp/* /var/tmp/*
 
 # Expor porta
 EXPOSE 2368
