@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  ghost-fork:
+    build: .
+    container_name: ghost-fork
+    restart: unless-stopped
+    ports:
+      - "2368:2368"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./content:/var/lib/ghost/content
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ghost-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2368/ghost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mysql:
+    image: mysql:8.0
+    container_name: cms_ghost-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cms
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 91cf92ea3a47f6ced4f7
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - ghost-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mysql", "-p91cf92ea3a47f6ced4f7"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  ghost-network:
+    driver: bridge

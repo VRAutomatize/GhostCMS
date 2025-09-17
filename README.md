@@ -1,104 +1,303 @@
-&nbsp;
-<p align="center">
-  <a href="https://ghost.org/#gh-light-mode-only" target="_blank">
-    <img src="https://user-images.githubusercontent.com/65487235/157884383-1b75feb1-45d8-4430-b636-3f7e06577347.png" alt="Ghost" width="200px">
-  </a>
-  <a href="https://ghost.org/#gh-dark-mode-only" target="_blank">
-    <img src="https://user-images.githubusercontent.com/65487235/157849205-aa24152c-4610-4d7d-b752-3a8c4f9319e6.png" alt="Ghost" width="200px">
-  </a>
-</p>
-&nbsp;
+# Ghost CMS Fork - Blog Cleber Social
 
-<p align="center">
-    <a href="https://ghost.org/">Ghost.org</a> •
-    <a href="https://forum.ghost.org">Forum</a> •
-    <a href="https://ghost.org/docs/">Docs</a> •
-    <a href="https://github.com/TryGhost/Ghost/blob/main/.github/CONTRIBUTING.md">Contributing</a> •
-    <a href="https://twitter.com/ghost">Twitter</a>
-    <br /><br />
-    <a href="https://ghost.org/">
-        <img src="https://img.shields.io/badge/downloads-100M+-brightgreen.svg" alt="Downloads" />
-    </a>
-    <a href="https://github.com/TryGhost/Ghost/releases/">
-        <img src="https://img.shields.io/github/release/TryGhost/Ghost.svg" alt="Latest release" />
-    </a>
-    <a href="https://github.com/TryGhost/Ghost/actions">
-        <img src="https://github.com/TryGhost/Ghost/workflows/CI/badge.svg?branch=main" alt="Build status" />
-    </a>
-    <a href="https://github.com/TryGhost/Ghost/contributors/">
-        <img src="https://img.shields.io/github/contributors/TryGhost/Ghost.svg" alt="Contributors" />
-    </a>
-</p>
+Este é um fork customizado do Ghost CMS otimizado para deploy no Easypanel, com configurações explícitas e sem dependência de variáveis mágicas.
 
-&nbsp;
+## 🚀 Características
 
-> [!NOTE]
-> Love open source? We're hiring! Ghost is looking staff engineers to [join the team](https://careers.ghost.org) and work with us full-time
+- **Ghost CMS 6.0.8** baseado no repositório oficial
+- **MySQL 8.0** como banco de dados
+- **Dockerfile customizado** baseado em `node:18-alpine`
+- **Configuração explícita** via `config.production.json`
+- **Deploy pronto** para Easypanel
+- **Script de seed** para dados iniciais
+- **Volume persistente** para conteúdo
 
-<a href="https://ghost.org/"><img src="https://user-images.githubusercontent.com/353959/169805900-66be5b89-0859-4816-8da9-528ed7534704.png" alt="Fiercely independent, professional publishing. Ghost is the most popular open source, headless Node.js CMS which already works with all the tools you know and love." /></a>
+## 📋 Pré-requisitos
 
-&nbsp;
+- Docker e Docker Compose
+- Node.js 18+ (para desenvolvimento local)
+- Yarn 1.x
 
-<a href="https://ghost.org/pricing/#gh-light-mode-only" target="_blank"><img src="https://user-images.githubusercontent.com/65487235/157849437-9b8fcc48-1920-4b26-a1e8-5806db0e6bb9.png" alt="Ghost(Pro)" width="165px" /></a>
-<a href="https://ghost.org/pricing/#gh-dark-mode-only" target="_blank"><img src="https://user-images.githubusercontent.com/65487235/157849438-79889b04-b7b6-4ba7-8de6-4c1e4b4e16a5.png" alt="Ghost(Pro)" width="165px" /></a>
+## 🛠️ Configuração Local
 
-The easiest way to get a production instance deployed is with our official **[Ghost(Pro)](https://ghost.org/pricing/)** managed service. It takes about 2 minutes to launch a new site with worldwide CDN, backups, security and maintenance all done for you.
+### 1. Clone o repositório
 
-For most people this ends up being the best value option because of [how much time it saves](https://ghost.org/docs/hosting/) — and 100% of revenue goes to the Ghost Foundation; funding the maintenance and further development of the project itself. So you’ll be supporting open source software *and* getting a great service!
-
-&nbsp;
-
-# Quickstart install
-
-If you want to run your own instance of Ghost, in most cases the best way is to use our **CLI tool**
-
-```
-npm install ghost-cli -g
+```bash
+git clone https://github.com/seu-usuario/ghost-cms-fork.git
+cd ghost-cms-fork
 ```
 
-&nbsp;
+### 2. Instale as dependências
 
-Then, if installing locally add the `local` flag to get up and running in under a minute - [Local install docs](https://ghost.org/docs/install/local/)
-
-```
-ghost install local
+```bash
+yarn install
 ```
 
-&nbsp;
+### 3. Execute com Docker Compose
 
-or on a server run the full install, including automatic SSL setup using LetsEncrypt - [Production install docs](https://ghost.org/docs/install/ubuntu/)
+```bash
+# Subir os serviços
+yarn docker:run
+
+# Ver logs
+yarn docker:logs
+
+# Parar os serviços
+yarn docker:stop
+```
+
+### 4. Execute o seed (opcional)
+
+```bash
+yarn seed
+```
+
+### 5. Acesse o blog
+
+- **Frontend**: http://localhost:2368
+- **Admin**: http://localhost:2368/ghost/
+- **Credenciais**: admin@clebersocial.com.br / admin123!@#
+
+## 🌐 Deploy no Easypanel
+
+### 1. Prepare o repositório
+
+Certifique-se de que todos os arquivos estão commitados:
+
+```bash
+git add .
+git commit -m "Deploy ready"
+git push origin main
+```
+
+### 2. Configure no Easypanel
+
+1. Acesse seu painel do Easypanel
+2. Crie um novo projeto
+3. Importe o repositório GitHub
+4. O Easypanel detectará automaticamente o `easypanel.json`
+5. Configure o domínio: `blog.clebersocial.com.br`
+
+### 3. Variáveis de ambiente (opcional)
+
+Se necessário, configure estas variáveis no Easypanel:
+
+```env
+NODE_ENV=production
+DB_HOST=cms_ghost-db
+DB_USER=mysql
+DB_PASSWORD=91cf92ea3a47f6ced4f7
+DB_NAME=cms
+```
+
+## ⚙️ Configurações
+
+### Alterando a URL do blog
+
+Edite o arquivo `ghost/core/config.production.json`:
+
+```json
+{
+  "url": "https://seu-dominio.com.br"
+}
+```
+
+### Alterando configurações de email
+
+```json
+{
+  "mail": {
+    "from": "no-reply@seudominio.com.br",
+    "transport": "SMTP",
+    "options": {
+      "service": "Gmail",
+      "auth": {
+        "user": "seu-email@gmail.com",
+        "pass": "sua-senha-app"
+      }
+    }
+  }
+}
+```
+
+### Alterando configurações do banco
+
+```json
+{
+  "database": {
+    "client": "mysql2",
+    "connection": {
+      "host": "seu-host-mysql",
+      "user": "seu-usuario",
+      "password": "sua-senha",
+      "database": "seu-banco"
+    }
+  }
+}
+```
+
+## 📁 Estrutura do Projeto
 
 ```
-ghost install
+ghost-cms-fork/
+├── ghost/core/                 # Código fonte do Ghost
+│   ├── config.production.json  # Configurações de produção
+│   └── package.json           # Dependências do Ghost
+├── content/                    # Volume persistente (criado automaticamente)
+├── docker-compose.yml         # Configuração Docker Compose
+├── Dockerfile                 # Imagem Docker customizada
+├── easypanel.json            # Configuração para Easypanel
+├── package.json              # Dependências do projeto
+├── seed.js                   # Script de inicialização
+└── README.md                 # Esta documentação
 ```
 
-&nbsp;
+## 🔧 Comandos Úteis
 
-Check out our [official documentation](https://ghost.org/docs/) for more information about our [recommended hosting stack](https://ghost.org/docs/hosting/) & properly [upgrading Ghost](https://ghost.org/docs/update/), plus everything you need to develop your own Ghost [themes](https://ghost.org/docs/themes/) or work with [our API](https://ghost.org/docs/content-api/).
+### Desenvolvimento
 
-### Contributors & advanced developers
+```bash
+# Instalar dependências
+yarn install
 
-For anyone wishing to contribute to Ghost or to hack/customize core files we recommend following our full development setup guides: [Contributor guide](https://ghost.org/docs/contributing/) • [Developer setup](https://ghost.org/docs/install/source/)
+# Construir assets
+yarn build
 
-&nbsp;
+# Executar em modo desenvolvimento
+yarn dev
 
-# Ghost sponsors
+# Executar seed
+yarn seed
+```
 
-A big thanks to our sponsors and partners who make Ghost possible. If you're interested in sponsoring Ghost and supporting the project, please check out our profile on [GitHub sponsors](https://github.com/sponsors/TryGhost) :heart:
+### Docker
 
-**[DigitalOcean](https://m.do.co/c/9ff29836d717)** • **[Fastly](https://www.fastly.com/)** • **[Tinybird](https://tbrd.co/ghost)**
+```bash
+# Construir imagem
+yarn docker:build
 
-&nbsp;
+# Subir serviços
+yarn docker:run
 
-# Getting help
+# Ver logs
+yarn docker:logs
 
-Everyone can get help and support from a large community of developers over on the [Ghost forum](https://forum.ghost.org/). **Ghost(Pro)** customers have access to 24/7 email support.
+# Acessar shell do container
+yarn docker:shell
 
-To stay up to date with all the latest news and product updates, make sure you [subscribe to our changelog newsletter](https://ghost.org/changelog/) — or follow us [on Twitter](https://twitter.com/Ghost), if you prefer your updates bite-sized and facetious. :saxophone::turtle:
+# Parar serviços
+yarn docker:stop
+```
 
-&nbsp;
+### Manutenção
 
-# Copyright & license
+```bash
+# Backup do banco de dados
+docker-compose exec mysql mysqldump -u mysql -p91cf92ea3a47f6ced4f7 cms > backup.sql
 
-Copyright (c) 2013-2025 Ghost Foundation - Released under the [MIT license](LICENSE).
-Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.
+# Restaurar backup
+docker-compose exec -T mysql mysql -u mysql -p91cf92ea3a47f6ced4f7 cms < backup.sql
+
+# Limpar volumes
+docker-compose down -v
+```
+
+## 🚨 Troubleshooting
+
+### Problema: Ghost não conecta ao MySQL
+
+**Solução**: Verifique se o MySQL está rodando e acessível:
+
+```bash
+docker-compose logs mysql
+docker-compose exec mysql mysql -u mysql -p91cf92ea3a47f6ced4f7 -e "SELECT 1"
+```
+
+### Problema: Erro de permissões no volume
+
+**Solução**: Ajuste as permissões do diretório content:
+
+```bash
+sudo chown -R 1001:1001 content/
+```
+
+### Problema: Ghost não inicia
+
+**Solução**: Verifique os logs e configurações:
+
+```bash
+docker-compose logs ghost-fork
+```
+
+### Problema: Seed falha
+
+**Solução**: Execute o seed após o Ghost estar rodando:
+
+```bash
+# Aguarde o Ghost inicializar completamente
+sleep 30
+yarn seed
+```
+
+## 📝 Logs e Monitoramento
+
+### Ver logs em tempo real
+
+```bash
+# Todos os serviços
+docker-compose logs -f
+
+# Apenas Ghost
+docker-compose logs -f ghost-fork
+
+# Apenas MySQL
+docker-compose logs -f mysql
+```
+
+### Health Checks
+
+Os containers incluem health checks automáticos:
+
+- **Ghost**: Verifica endpoint `/ghost/`
+- **MySQL**: Verifica conexão com `mysqladmin ping`
+
+## 🔒 Segurança
+
+### Alterar senhas padrão
+
+1. **MySQL**: Altere no `docker-compose.yml` e `easypanel.json`
+2. **Admin Ghost**: Altere após primeiro login
+3. **SSL**: Configure HTTPS no Easypanel
+
+### Backup regular
+
+Configure backups automáticos do volume MySQL:
+
+```bash
+# Script de backup diário
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+docker-compose exec mysql mysqldump -u mysql -p91cf92ea3a47f6ced4f7 cms > "backup_${DATE}.sql"
+```
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 🆘 Suporte
+
+- **Issues**: [GitHub Issues](https://github.com/seu-usuario/ghost-cms-fork/issues)
+- **Documentação Ghost**: [Ghost Docs](https://ghost.org/docs/)
+- **Easypanel Docs**: [Easypanel Docs](https://easypanel.io/docs)
+
+---
+
+**Desenvolvido com ❤️ para o Blog Cleber Social**

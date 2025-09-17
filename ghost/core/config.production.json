@@ -1,0 +1,53 @@
+{
+  "url": "https://blog.clebersocial.com.br",
+  "server": {
+    "port": 2368,
+    "host": "0.0.0.0"
+  },
+  "database": {
+    "client": "mysql2",
+    "connection": {
+      "host": "cms_ghost-db",
+      "user": "mysql",
+      "password": "91cf92ea3a47f6ced4f7",
+      "database": "cms",
+      "charset": "utf8mb4"
+    },
+    "pool": {
+      "min": 2,
+      "max": 10
+    }
+  },
+  "mail": {
+    "from": "no-reply@clebersocial.com.br",
+    "transport": "Direct"
+  },
+  "logging": {
+    "level": "info",
+    "transports": ["stdout"]
+  },
+  "paths": {
+    "contentPath": "/var/lib/ghost/content"
+  },
+  "privacy": {
+    "useTinfoil": false,
+    "useUpdateCheck": false,
+    "useGravatar": false
+  },
+  "caching": {
+    "frontend": {
+      "maxAge": 300
+    }
+  },
+  "maintenance": {
+    "enabled": false
+  },
+  "imageOptimisation": {
+    "resize": true,
+    "webp": true
+  },
+  "compress": true,
+  "cors": {
+    "origin": ["https://blog.clebersocial.com.br"]
+  }
+}

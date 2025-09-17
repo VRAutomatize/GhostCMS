@@ -1,0 +1,20 @@
+# Arquivo de override para desenvolvimento local
+# Este arquivo é automaticamente carregado pelo docker-compose
+version: '3.8'
+
+services:
+  ghost-fork:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./ghost/core:/var/lib/ghost:ro
+      - ./content:/var/lib/ghost/content
+    ports:
+      - "2368:2368"
+    command: ["node", "index.js", "dev"]
+
+  mysql:
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword

@@ -1,0 +1,90 @@
+{
+  "name": "ghost-cms-fork",
+  "description": "Ghost CMS Fork - Blog Cleber Social",
+  "version": "1.0.0",
+  "services": [
+    {
+      "name": "ghost-fork",
+      "source": {
+        "type": "dockerfile",
+        "dockerfile": "Dockerfile"
+      },
+      "domains": [
+        {
+          "host": "blog.clebersocial.com.br",
+          "https": true
+        }
+      ],
+      "ports": [
+        {
+          "port": 2368,
+          "internalProtocol": "http"
+        }
+      ],
+      "environment": {
+        "NODE_ENV": "production"
+      },
+      "volumes": [
+        {
+          "name": "ghost-content",
+          "mountPath": "/var/lib/ghost/content"
+        }
+      ],
+      "healthcheck": {
+        "path": "/ghost/",
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3
+      },
+      "restart": "unless-stopped"
+    },
+    {
+      "name": "mysql",
+      "source": {
+        "type": "image",
+        "image": "mysql:8.0"
+      },
+      "environment": {
+        "MYSQL_ROOT_PASSWORD": "rootpassword",
+        "MYSQL_DATABASE": "cms",
+        "MYSQL_USER": "mysql",
+        "MYSQL_PASSWORD": "91cf92ea3a47f6ced4f7"
+      },
+      "volumes": [
+        {
+          "name": "mysql-data",
+          "mountPath": "/var/lib/mysql"
+        }
+      ],
+      "ports": [
+        {
+          "port": 3306,
+          "internalProtocol": "tcp"
+        }
+      ],
+      "healthcheck": {
+        "command": "mysqladmin ping -h localhost -u mysql -p91cf92ea3a47f6ced4f7",
+        "interval": 30,
+        "timeout": 10,
+        "retries": 5
+      },
+      "restart": "unless-stopped"
+    }
+  ],
+  "volumes": [
+    {
+      "name": "ghost-content",
+      "type": "persistent"
+    },
+    {
+      "name": "mysql-data",
+      "type": "persistent"
+    }
+  ],
+  "networks": [
+    {
+      "name": "ghost-network",
+      "driver": "bridge"
+    }
+  ]
+}
