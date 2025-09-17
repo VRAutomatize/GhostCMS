@@ -7,7 +7,7 @@
       "name": "ghost-fork",
       "source": {
         "type": "dockerfile",
-        "dockerfile": "Dockerfile.minimal"
+        "dockerfile": "Dockerfile.official-simple"
       },
       "domains": [
         {

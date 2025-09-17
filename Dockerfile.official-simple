@@ -1,0 +1,18 @@
+# Ghost CMS Fork - Baseado na imagem oficial (versão simples)
+FROM ghost:6.0.8-alpine
+
+# Copiar configuração personalizada
+COPY ghost/core/config.production.json /var/lib/ghost/config.production.json
+
+# Criar diretório de conteúdo
+RUN mkdir -p /var/lib/ghost/content
+
+# Expor porta
+EXPOSE 2368
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:2368/ghost/ || exit 1
+
+# Comando de inicialização
+CMD ["node", "current/index.js", "start", "--no-setup"]
