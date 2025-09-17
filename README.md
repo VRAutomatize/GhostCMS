@@ -48,13 +48,14 @@ yarn docker:stop
 
 ### 🔧 Dockerfiles Disponíveis
 
-O projeto inclui 3 versões do Dockerfile para diferentes cenários:
+O projeto inclui 4 versões do Dockerfile para diferentes cenários:
 
 - **`Dockerfile`** - Versão completa com yarn (padrão)
 - **`Dockerfile.simple`** - Versão simplificada com npm
 - **`Dockerfile.robust`** - Versão robusta com otimizações
+- **`Dockerfile.fixed`** - Versão com correção de conflitos de dependências (recomendada)
 
-**Para Easypanel**, use o `Dockerfile.simple` que é mais estável.
+**Para Easypanel**, use o `Dockerfile.fixed` que resolve conflitos de dependências.
 
 ### 4. Execute o seed (opcional)
 
@@ -214,17 +215,19 @@ docker-compose down -v
 
 ## 🚨 Troubleshooting
 
-### Problema: Erro de build no Docker
+### Problema: Erro de build no Docker (conflito de dependências)
 
-**Solução**: Use o Dockerfile.simple que é mais estável:
+**Solução**: Use o Dockerfile.fixed que resolve conflitos de dependências:
 
 ```bash
 # No easypanel.json, altere para:
-"dockerfile": "Dockerfile.simple"
+"dockerfile": "Dockerfile.fixed"
 
 # Ou teste localmente:
-docker build -f Dockerfile.simple -t ghost-cms-fork .
+docker build -f Dockerfile.fixed -t ghost-cms-fork .
 ```
+
+**Erro específico**: `ERESOLVE unable to resolve dependency tree` entre knex e bookshelf
 
 ### Problema: Ghost não conecta ao MySQL
 

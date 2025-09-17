@@ -21,13 +21,13 @@ git push origin main
 ## 🔧 Configurações Importantes
 
 ### Dockerfile Recomendado
-O `easypanel.json` já está configurado para usar o `Dockerfile.simple` que é mais estável:
+O `easypanel.json` já está configurado para usar o `Dockerfile.fixed` que resolve conflitos de dependências:
 
 ```json
 {
   "source": {
     "type": "dockerfile",
-    "dockerfile": "Dockerfile.simple"
+    "dockerfile": "Dockerfile.fixed"
   }
 }
 ```
@@ -45,8 +45,8 @@ DB_NAME=cms
 
 ## 🚨 Solução de Problemas
 
-### Erro de Build
-Se o build falhar, altere no `easypanel.json`:
+### Erro de Build (Conflito de Dependências)
+Se o build falhar com erro `ERESOLVE unable to resolve dependency tree`, o `Dockerfile.fixed` já resolve isso. Se ainda falhar, tente:
 
 ```json
 {

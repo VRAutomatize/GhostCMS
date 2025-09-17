@@ -22,7 +22,7 @@ WORKDIR /var/lib/ghost
 COPY ghost/core/package.json ./
 
 # Instalar dependências de produção com npm (mais estável)
-RUN npm install --production --no-optional && \
+RUN npm install --production --no-optional --legacy-peer-deps && \
     npm cache clean --force
 
 # Copiar código fonte do Ghost
